@@ -16,13 +16,17 @@ import (
 	"github.com/prometheus/common/version"
 )
 
+const (
+	namespace = "apache" // For Prometheus metrics.
+)
+
 var (
 	listeningAddress = flag.String("telemetry.address", ":9117", "Address on which to expose metrics.")
 	metricsEndpoint  = flag.String("telemetry.endpoint", "/metrics", "Path under which to expose metrics.")
 	scrapeURI        = flag.String("scrape_uri", "http://localhost/server-status/?auto", "URI to apache stub status page.")
 	insecure         = flag.Bool("insecure", false, "Ignore server certificate if using https.")
 	showVersion      = flag.Bool("version", false, "Print version information.")
-	namespace        = flag.String("namespace", "apache", "Set namespace definition.")
+	binder           = flag.String("binder", "binder", "Set binder name.")
 )
 
 type Exporter struct {
@@ -45,7 +49,7 @@ func NewExporter(uri string) *Exporter {
 	return &Exporter{
 		URI: uri,
 		up: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", "up"),
+			prometheus.BuildFQName(namespace, "", binder + "up"),
 			"Could the apache server be reached",
 			nil,
 			nil),
@@ -55,35 +59,35 @@ func NewExporter(uri string) *Exporter {
 			Help:      "Number of errors while scraping apache.",
 		}),
 		accessesTotal: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", "accesses_total"),
+			prometheus.BuildFQName(namespace, "", binder + "accesses_total"),
 			"Current total apache accesses (*)",
 			nil,
 			nil),
 		kBytesTotal: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", "sent_kilobytes_total"),
+			prometheus.BuildFQName(namespace, "", binder + "sent_kilobytes_total"),
 			"Current total kbytes sent (*)",
 			nil,
 			nil),
 		cpuload: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      "cpuload",
+			Name:      binder + "cpuload",
 			Help:      "The current percentage CPU used by each worker and in total by all workers combined (*)",
 		}),
 		uptime: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", "uptime_seconds_total"),
+			prometheus.BuildFQName(namespace, "", binder + "uptime_seconds_total"),
 			"Current uptime in seconds (*)",
 			nil,
 			nil),
 		workers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      "workers",
+			Name:      binder + "workers",
 			Help:      "Apache worker statuses",
 		},
 			[]string{"state"},
 		),
 		scoreboard: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      "scoreboard",
+			Name:      binder + "scoreboard",
 			Help:      "Apache scoreboard statuses",
 		},
 			[]string{"state"},
