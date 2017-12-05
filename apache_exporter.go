@@ -16,16 +16,13 @@ import (
 	"github.com/prometheus/common/version"
 )
 
-const (
-	namespace = "apache" // For Prometheus metrics.
-)
-
 var (
 	listeningAddress = flag.String("telemetry.address", ":9117", "Address on which to expose metrics.")
 	metricsEndpoint  = flag.String("telemetry.endpoint", "/metrics", "Path under which to expose metrics.")
 	scrapeURI        = flag.String("scrape_uri", "http://localhost/server-status/?auto", "URI to apache stub status page.")
 	insecure         = flag.Bool("insecure", false, "Ignore server certificate if using https.")
 	showVersion      = flag.Bool("version", false, "Print version information.")
+	namespace        = flag.Bool("namespace", "apache", "Set namespace definition.")
 )
 
 type Exporter struct {
