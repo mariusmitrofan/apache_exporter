@@ -49,7 +49,7 @@ func NewExporter(uri string) *Exporter {
 	return &Exporter{
 		URI: uri,
 		up: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", *binder + "up"),
+			prometheus.BuildFQName(namespace, "", *binder + "_up"),
 			"Could the apache server be reached",
 			nil,
 			nil),
@@ -59,42 +59,42 @@ func NewExporter(uri string) *Exporter {
 			Help:      "Number of errors while scraping apache.",
 		}),
 		accessesTotal: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", *binder + "accesses_total"),
+			prometheus.BuildFQName(namespace, "", *binder + "_accesses_total"),
 			"Current total apache accesses (*)",
 			nil,
 			nil),
 		kBytesTotal: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", *binder + "sent_kilobytes_total"),
+			prometheus.BuildFQName(namespace, "", *binder + "_sent_kilobytes_total"),
 			"Current total kbytes sent (*)",
 			nil,
 			nil),
 		cpuload: prometheus.NewGauge(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      *binder + "cpuload",
+			Name:      *binder + "_cpuload",
 			Help:      "The current percentage CPU used by each worker and in total by all workers combined (*)",
 		}),
 		uptime: prometheus.NewDesc(
-			prometheus.BuildFQName(namespace, "", *binder + "uptime_seconds_total"),
+			prometheus.BuildFQName(namespace, "", *binder + "_uptime_seconds_total"),
 			"Current uptime in seconds (*)",
 			nil,
 			nil),
 		workers: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      *binder + "workers",
+			Name:      *binder + "_workers",
 			Help:      "Apache worker statuses",
 		},
 			[]string{"state"},
 		),
 		scoreboard: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      *binder + "scoreboard",
+			Name:      *binder + "_scoreboard",
 			Help:      "Apache scoreboard statuses",
 		},
 			[]string{"state"},
 		),
 		connections: prometheus.NewGaugeVec(prometheus.GaugeOpts{
 			Namespace: namespace,
-			Name:      "connections",
+			Name:      *binder + "_connections",
 			Help:      "Apache connection statuses",
 		},
 			[]string{"state"},
