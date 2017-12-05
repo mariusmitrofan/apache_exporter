@@ -22,7 +22,7 @@ var (
 	scrapeURI        = flag.String("scrape_uri", "http://localhost/server-status/?auto", "URI to apache stub status page.")
 	insecure         = flag.Bool("insecure", false, "Ignore server certificate if using https.")
 	showVersion      = flag.Bool("version", false, "Print version information.")
-	namespace        = flag.Bool("namespace", "apache", "Set namespace definition.")
+	namespace        = flag.String("namespace", "apache", "Set namespace definition.")
 )
 
 type Exporter struct {
